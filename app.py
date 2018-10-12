@@ -1,6 +1,6 @@
-import socket, time, string
+import socket, time, string, _thread 
 
-def main():
+def irc():
     ircConnection = connect()
     while True:
         try:
@@ -19,9 +19,24 @@ def main():
             ircConnection = connect()
 
 def connect():
-    ircConnection = socket.create_connection(('chat.freenode.net', 6667), 600)
+    try:
+        ircConnection = socket.create_connection(('chat.freenode.net', 6667), 600)
+    except:
+        return False
     ircConnection.send(b"USER Phydra * * :Phydra\n")
     ircConnection.send(b"NICK Phydra\n")
     return ircConnection
+
+def setup():
+    _thread.start_new_thread(irc)
+
+def loop():
+    time.sleep(1)
+
+def main():
+    setup()
+    while True:
+        loop()
+    return True
 
 main()
