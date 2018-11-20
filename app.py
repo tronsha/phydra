@@ -4,8 +4,7 @@ import _thread
 import sys
 
 
-def irc():
-    irc_connection = connect()
+def irc(irc_connection):
     while True:
         try:
             received_data = irc_connection.recv(4096)
@@ -38,7 +37,8 @@ def connect():
 
 
 def setup():
-    _thread.start_new_thread(irc, ())
+    irc_connection = connect()
+    _thread.start_new_thread(irc, (irc_connection,))
 
 
 def loop():
